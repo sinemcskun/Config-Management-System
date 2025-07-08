@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QPushButton>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,11 +23,14 @@ MainWindow::MainWindow(QWidget *parent)
     formLayout = new QFormLayout();
 
     saveButton = new QPushButton("Save", this);
+    loadButton = new QPushButton("Load Config", this);
 
     mainLayout->addLayout(formLayout);
     mainLayout->addWidget(saveButton);
+    mainLayout->addWidget(loadButton);
 
     connect(saveButton, &QPushButton::clicked, this, &MainWindow::saveJson);
+    connect(loadButton, &QPushButton::clicked, this, &MainWindow::onLoadConfigClicked);
 
     loadJson();
 }
@@ -36,8 +40,31 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::onLoadConfigClicked(){
+    QString filename = QFileDialog::getOpenFileName(this,tr("Open config file"), QDir::currentPath(), tr("JSON Files (*.json);;All Files (*)"));
+
+    if(!filename.isEmpty()){
+        QFile file(filename);
+        if(!file.open(QIODevice::ReadOnly)){
+            qDebug() << "Can not open file:" << file.errorString();
+            return;
+        }
+
+        QByteArray data = file.readAll();
+        file.close();
+
+        QJsonDocument document = QJsonDocument::fromJson(data);
+        jsonData = document.object();
+
+        qDebug() << "File opened:" << jsonData;
+
+        createDynamicUI();
+
+    }
+}
+
 void MainWindow::loadJson(){
-    QFile file("D:/qt-projects/conf-management-system/conf.json");
+    QFile file("../../conf.json"); // i suppose that we are on build folder by default and i try to open conf.
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "File did not opened!";
         return;

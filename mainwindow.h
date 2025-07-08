@@ -25,6 +25,7 @@ public:
     void loadJson();
     void saveJson();
     void createDynamicUI();
+    void onLoadConfigClicked();
 
 private:
     Ui::MainWindow *ui;
@@ -33,6 +34,7 @@ private:
     QFormLayout *formLayout;
     QVBoxLayout *mainLayout;
     QPushButton *saveButton;
+    QPushButton *loadButton;
 
     QMap<QString, QWidget*> widgets;
 };
