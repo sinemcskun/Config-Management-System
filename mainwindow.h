@@ -27,7 +27,6 @@ public:
     void createDynamicUI();
     void onLoadConfigClicked();
     void addVariable();
-    void deleteVariable();
 
 private:
     Ui::MainWindow *ui;
@@ -38,7 +37,6 @@ private:
     QPushButton *saveButton;
     QPushButton *loadButton;
     QPushButton *addVar;
-    QPushButton *delVar;
 
     QMap<QString, QWidget*> widgets;
 };

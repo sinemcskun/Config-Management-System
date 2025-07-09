@@ -1,6 +1,7 @@
 {
-    "bool": true,
-    "hey": true,
-    "name": "sin",
-    "number": 50
+    "b": 0,
+    "name": "sinem",
+    "num": 55,
+    "okok": false,
+    "x": ""
 }

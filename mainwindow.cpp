@@ -26,11 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     saveButton = new QPushButton("Save", this);
     loadButton = new QPushButton("Load Config", this);
     addVar = new QPushButton("Add Variable", this);
-    delVar = new QPushButton("Delete Variable", this);
 
     mainLayout->addLayout(formLayout);
     mainLayout->addWidget(addVar);
-    mainLayout->addWidget(delVar);
     mainLayout->addWidget(saveButton);
     mainLayout->addWidget(loadButton);
 
@@ -38,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(saveButton, &QPushButton::clicked, this, &MainWindow::saveJson);
     connect(loadButton, &QPushButton::clicked, this, &MainWindow::onLoadConfigClicked);
     connect(addVar, &QPushButton::clicked, this, &MainWindow::addVariable);
-    connect(delVar, &QPushButton::clicked, this, &MainWindow::deleteVariable);
 
     loadJson();
 }
@@ -75,9 +72,6 @@ void MainWindow::addVariable(){
     createDynamicUI();
 }
 
-void MainWindow::deleteVariable(){
-
-}
 
 void MainWindow::onLoadConfigClicked(){
     QString filename = QFileDialog::getOpenFileName(this,tr("Open config file"), QDir::currentPath(), tr("JSON Files (*.json);;All Files (*)"));
