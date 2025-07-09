@@ -9,6 +9,7 @@
 #include <QSpinBox>
 #include <QPushButton>
 #include <QFileDialog>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,13 +25,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     saveButton = new QPushButton("Save", this);
     loadButton = new QPushButton("Load Config", this);
+    addVar = new QPushButton("Add Variable", this);
+    delVar = new QPushButton("Delete Variable", this);
 
     mainLayout->addLayout(formLayout);
+    mainLayout->addWidget(addVar);
+    mainLayout->addWidget(delVar);
     mainLayout->addWidget(saveButton);
     mainLayout->addWidget(loadButton);
 
+
     connect(saveButton, &QPushButton::clicked, this, &MainWindow::saveJson);
     connect(loadButton, &QPushButton::clicked, this, &MainWindow::onLoadConfigClicked);
+    connect(addVar, &QPushButton::clicked, this, &MainWindow::addVariable);
+    connect(delVar, &QPushButton::clicked, this, &MainWindow::deleteVariable);
 
     loadJson();
 }
@@ -38,6 +46,37 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::addVariable(){
+    bool ok;
+    QString varName = QInputDialog::getText(this, "Add Variable",
+                                            "Variable name:",
+                                            QLineEdit::Normal,
+                                            "", &ok);
+    if (!ok || varName.isEmpty()) return;
+
+    QStringList types = {"Boolean", "String", "Number"};
+    QString varType = QInputDialog::getItem(this, "Select Type",
+                                            "Variable type:",
+                                            types, 0, false, &ok);
+    if (!ok) return;
+
+    if (varType == "Boolean") {
+        jsonData[varName] = false;
+    }
+    else if (varType == "String") {
+        jsonData[varName] = "";
+    }
+    else if (varType == "Number") {
+        jsonData[varName] = 0;
+    }
+
+    createDynamicUI();
+}
+
+void MainWindow::deleteVariable(){
+
 }
 
 void MainWindow::onLoadConfigClicked(){
