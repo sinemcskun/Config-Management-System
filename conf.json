@@ -1,7 +1,23 @@
 {
-    "b": 0,
-    "name": "sinem",
-    "num": 55,
-    "okok": false,
-    "x": ""
+    "array": [
+        {
+            "a": 2
+        },
+        2,
+        "value"
+    ],
+    "f": [
+        8
+    ],
+    "kamera": {
+        "max": 13,
+        "zoom": 4
+    },
+    "sayi": [
+        "elma"
+    ],
+    "x": 4,
+    "yeni double": {
+        "newDouble": 7
+    }
 }

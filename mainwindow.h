@@ -2,42 +2,52 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
+#include <QJsonDocument>
 #include <QJsonObject>
-#include <QFormLayout>
-#include <QPushButton>
+#include <QJsonArray>
+#include <QFileDialog>
 #include <QVBoxLayout>
-#include <QMap>
-#include <QWidget>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void loadJson();
-    void saveJson();
-    void createDynamicUI();
-    void onLoadConfigClicked();
-    void addVariable();
+
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
-    Ui::MainWindow *ui;
-    QJsonObject jsonData;
-    QWidget *mainWidget;
-    QFormLayout *formLayout;
-    QVBoxLayout *mainLayout;
-    QPushButton *saveButton;
+    QTreeWidget *treeWidget;
     QPushButton *loadButton;
-    QPushButton *addVar;
+    QPushButton *saveButton;
 
-    QMap<QString, QWidget*> widgets;
+    QString defaultJsonPath = "../../conf.json";
+    QString currentPath = "";
+
+    void traverseJson(const QJsonValue &value, QTreeWidgetItem *parentItem);
+    QJsonValue buildJson(QTreeWidgetItem *item);
+    void loadJsonFromFile(const QString &filePath);
+
+private slots:
+    void loadJson();
+    void saveJson();
+    void addObjectEntry();
+    void addArrayEntry();
+    void addStringEntry();
+    void addBoolEntry();
+    void addDoubleEntry();
+    void addNullEntry();
+    void deleteEntry();
+    void onItemChanged(QTreeWidgetItem *item, int column);
+    void onItemClicked(QTreeWidgetItem *item, int column);
 };
+
 #endif // MAINWINDOW_H
